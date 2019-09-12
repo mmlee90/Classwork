@@ -1,0 +1,56 @@
+Script started on Fri 11 Nov 2016 11:46:40 PM EST
+bash-4.1$ uname -a
+Linux zeus-1 2.6.32-642.6.2.el6.x86_64 #1 SMP Wed Oct 26 06:52:09 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
+bash-4.1$ ls
+\  Lab9  Lab9_mlee58_204.c  Lab9_Submission_mlee58_204	makefile
+bash-4.1$ make Lab9+[K_mlee58_204 Lab9_mlee58_204.c
+cc -Wall -g    Lab9_mlee58_204.c   -o Lab9_mlee58_204
+Lab9_mlee58_204.c: In function ‘deleteList’:
+Lab9_mlee58_204.c:88: warning: unused variable ‘q’
+make: Nothing to be done for `Lab9_mlee58_204.c'.
+bash-4.1$ Lab9_mlee58_204 262262 50 1000
+178
+bash-4.1$ valgrind --leak-check=yes Lab9_mlee58_204 262262 50 1000
+==16462== Memcheck, a memory error detector
+==16462== Copyright (C) 2002-2012, and GNU GPL'd, by Julian Seward et al.
+==16462== Using Valgrind-3.8.1 and LibVEX; rerun with -h for copyright info
+==16462== Command: Lab9_mlee58_204 262262 50 1000
+==16462== 
+==16462== Use of uninitialised value of size 8
+==16462==    at 0x4007E0: insertNodeSorted (Lab9_mlee58_204.c:65)
+==16462==    by 0x400736: main (Lab9_mlee58_204.c:36)
+==16462== 
+==16462== Use of uninitialised value of size 8
+==16462==    at 0x4007F0: insertNodeSorted (Lab9_mlee58_204.c:69)
+==16462==    by 0x400736: main (Lab9_mlee58_204.c:36)
+==16462== 
+==16462== Use of uninitialised value of size 8
+==16462==    at 0x400804: insertNodeSorted (Lab9_mlee58_204.c:70)
+==16462==    by 0x400736: main (Lab9_mlee58_204.c:36)
+==16462== 
+178
+==16462== 
+==16462== HEAP SUMMARY:
+==16462==     in use at exit: 784 bytes in 49 blocks
+==16462==   total heap usage: 50 allocs, 1 frees, 800 bytes allocated
+==16462== 
+==16462== 768 bytes in 48 blocks are definitely lost in loss record 2 of 2
+==16462==    at 0x4A06A2E: malloc (vg_replace_malloc.c:270)
+==16462==    by 0x400779: makeNode (Lab9_mlee58_204.c:47)
+==16462==    by 0x40071F: main (Lab9_mlee58_204.c:35)
+==16462== 
+==16462== LEAK SUMMARY:
+==16462==    definitely lost: 768 bytes in 48 blocks
+==16462==    indirectly lost: 0 bytes in 0 blocks
+==16462==      possibly lost: 0 bytes in 0 blocks
+==16462==    still reachable: 16 bytes in 1 blocks
+==16462==         suppressed: 0 bytes in 0 blocks
+==16462== Reachable blocks (those to which a pointer was found) are not shown.
+==16462== To see them, rerun with: --leak-check=full --show-reachable=yes
+==16462== 
+==16462== For counts of detected and suppressed errors, rerun with: -v
+==16462== Use --track-origins=yes to see where uninitialised values come from
+==16462== ERROR SUMMARY: 148 errors from 4 contexts (suppressed: 6 from 6)
+bash-4.1$ exit
+
+Script done on Fri 11 Nov 2016 11:47:48 PM EST

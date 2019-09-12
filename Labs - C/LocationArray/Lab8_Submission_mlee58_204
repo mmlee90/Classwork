@@ -1,0 +1,499 @@
+Script started on Fri 04 Nov 2016 12:44:31 AM EDT
+bash-4.1$ uname -a
+Linux zeus-0 2.6.32-642.6.2.el6.x86_64 #1 SMP Wed Oct 26 06:52:09 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
+bash-4.1$ ls
+Lab8_mlee58_204.c  Lab8_Submission_mlee58_204  makefile
+bash-4.1$ cat Lab8_mlee58_204.c
+// Michelle Lee G00585387
+// CS 262, Lab Section 204
+// Lab 8
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Location{
+	int LocationNum;
+	char ID[15];
+	char Desc[50];
+	double Lat;
+	double Long;
+	struct Location* next;
+}location;
+
+void options();
+location *ResizeArray(location* LocationArray, int *num);
+void Lookup(int num, location* LocationArray);
+
+int main()
+{
+	//request array size from user, allocate memory from heap for an array called LocationArray
+	int num;
+	printf("Size of Array: ");
+	scanf("%d", &num);	
+	location* LocationArray = malloc(num * sizeof(struct Location));
+	if(LocationArray == NULL)
+	{
+		printf("Error allocationg memory for LocationArray");
+		exit(0);
+	}
+	options();
+	char choice;
+	scanf(" %c", &choice);
+	int count = 0; //counts how many spaces in LocationArray is used
+	while(choice != 'q')
+	{
+		//take input, create new struct location, populate it, and add to LocationArray
+		if(choice == 'a')
+		{
+			if(count < num)
+			{
+				char identity[15];
+				char description[50];
+				float latitude;
+				float longitude;
+				printf("Enter ID: \n");
+				scanf("%s", identity);
+				printf("Enter Description: \n");
+				scanf("%s", description);
+				printf("Enter Latitude: \n");
+				scanf("%f", &latitude);
+				printf("Enter Longitude: \n");
+				scanf("%f", &longitude);
+
+				location newLocation;
+
+				strcpy(newLocation.ID, identity);
+				strcpy(newLocation.Desc, description);
+				newLocation.Lat = latitude;
+				newLocation.Long= longitude;
+				LocationArray[count] = newLocation;
+				count++;
+			}
+			else if (count == num)
+			{
+				ResizeArray(LocationArray,&num);
+				char identity[15];
+				char description[50];
+				float latitude;
+				float longitude;
+				printf("Enter ID: \n");
+				scanf("%s", identity);
+				printf("Enter Description: \n");
+				scanf("%s", description);
+				printf("Enter Latitude: \n");
+				scanf("%f", &latitude);
+				printf("Enter Longitude: \n");
+				scanf("%f", &longitude);
+
+				location newLocation;
+
+				strcpy(newLocation.ID, identity);
+				strcpy(newLocation.Desc, description);
+				newLocation.Lat = latitude;
+				newLocation.Long= longitude;
+				LocationArray[count] = newLocation;
+				count++;
+			}	
+		}
+		else if(choice == 'p')
+		{
+			int i;
+			for(i=0;i<count;i++)
+			{
+				printf("ID: %s\n", LocationArray[i].ID);
+				printf("Description: %s\n", LocationArray[i].Desc);
+				printf("Latitude: %f\n", LocationArray[i].Lat);
+				printf("Longitude: %f\n\n", LocationArray[i].Long);
+			}
+		}
+		else if(choice == 'l')
+		{
+			Lookup(num, LocationArray);
+		}	
+		options();
+		scanf(" %c", &choice);
+	}
+	exit(0); //when user selects quit
+}
+
+void options()
+{
+	printf("Choose from the following options:\n");
+	printf("Add(a)\n");
+	printf("Print(p)\n");
+	printf("Lookup(l)\n");
+	printf("Quit(q)\n");
+}
+location *ResizeArray(location* LocationArray, int *num)
+{
+	*num *= 2;
+	//create temp location and allocate the current size to it
+	location *temp = NULL;
+	temp = (location *)malloc(*num * 2 * sizeof(struct Location));
+	//copy LocationArray to temp
+	memcpy(temp, LocationArray, sizeof *LocationArray * *num);
+	
+	
+	free(LocationArray);
+	return temp;
+}
+void Lookup(int num, location* LocationArray)
+{
+	int x;
+	printf("Please enter Location ID\n");
+	scanf("%d", &x);
+	if(x < num)
+	{
+		printf("ID: %s\n", LocationArray[x].ID);
+		printf("Description: %s\n", LocationArray[x].Desc);
+		printf("Latitude: %f\n", LocationArray[x].Lat);
+		printf("Longitude: %f\n\n", LocationArray[x].Long);
+		
+	}
+	else
+	{
+		printf("Location ID %d not found\n", x);
+		exit(0);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+bash-4.1$ make Lab8_mlee58_204 Lab8_mlee58_204.f[Kc
+cc -Wall -g    Lab8_mlee58_204.c   -o Lab8_mlee58_204
+Lab8_mlee58_204.c: In function ‘main’:
+Lab8_mlee58_204.c:58: warning: implicit declaration of function ‘strcpy’
+Lab8_mlee58_204.c:58: warning: incompatible implicit declaration of built-in function ‘strcpy’
+Lab8_mlee58_204.c:83: warning: incompatible implicit declaration of built-in function ‘strcpy’
+Lab8_mlee58_204.c: In function ‘ResizeArray’:
+Lab8_mlee58_204.c:127: warning: implicit declaration of function ‘memcpy’
+Lab8_mlee58_204.c:127: warning: incompatible implicit declaration of built-in function ‘memcpy’
+make: Nothing to be done for `Lab8_mlee58_204.c'.
+bash-4.1$ valgrind --leak-check=yes Lab8_mlee58_204
+==19703== Memcheck, a memory error detector
+==19703== Copyright (C) 2002-2012, and GNU GPL'd, by Julian Seward et al.
+==19703== Using Valgrind-3.8.1 and LibVEX; rerun with -h for copyright info
+==19703== Command: Lab8_mlee58_204
+==19703== 
+Size of Array: 2
+Choose from the following options:
+Add(a)
+Print(p)
+Lookup(l)
+Quit(q)
+a
+Enter ID: 
+hello^H^H^H          hi^H^H      i
+Enter Description: 
+bye
+Enter Latitude: 
+1.1
+Enter Longitude: 
+2.^H^H    2
+Choose from the following options:
+Add(a)
+Print(p)
+Lookup(l)
+Quit(q)
+p
+ID: hi
+Description: bye
+Latitude: 1.100000
+Longitude: 2.200000
+
+Choose from the following options:
+Add(a)
+Print(p)
+Lookup(l)
+Quit(q)
+a
+Enter ID: 
+b
+Enter Description: 
+b
+Enter Latitude: 
+2.2
+Enter Longitude: 
+2.2
+Choose from the following options:
+Add(a)
+Print(p)
+Lookup(l)
+Quit(q)
+p
+ID: hi
+Description: bye
+Latitude: 1.100000
+Longitude: 2.200000
+
+ID: b
+Description: b
+Latitude: 2.200000
+Longitude: 2.200000
+
+Choose from the following options:
+Add(a)
+Print(p)
+Lookup(l)
+Quit(q)
+l
+Please enter Location ID
+1
+ID: b
+Description: b
+Latitude: 2.200000
+Longitude: 2.200000
+
+Choose from the following options:
+Add(a)
+Print(p)
+Lookup(l)
+Quit(q)
+a
+==19703== Source and destination overlap in memcpy(0x4c2f140, 0x4c2f040, 384)
+==19703==    at 0x4A08BCE: memcpy (mc_replace_strmem.c:882)
+==19703==    by 0x400CC4: ResizeArray (Lab8_mlee58_204.c:127)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+==19703== Invalid read of size 8
+==19703==    at 0x4A08D4C: memcpy (mc_replace_strmem.c:882)
+==19703==    by 0x400CC4: ResizeArray (Lab8_mlee58_204.c:127)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703==  Address 0x4c2f138 is 8 bytes before a block of size 768 alloc'd
+==19703==    at 0x4A06A2E: malloc (vg_replace_malloc.c:270)
+==19703==    by 0x400C94: ResizeArray (Lab8_mlee58_204.c:125)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+Enter ID: 
+hello
+Enter Description: 
+goodbye
+Enter Latitude: 
+3.3
+Enter Longitude: 
+3.3
+==19703== Invalid write of size 8
+==19703==    at 0x400A5B: main (Lab8_mlee58_204.c:87)
+==19703==  Address 0x4c2f100 is 0 bytes after a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+==19703== Invalid write of size 8
+==19703==    at 0x400A65: main (Lab8_mlee58_204.c:87)
+==19703==  Address 0x4c2f108 is 8 bytes after a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+==19703== Invalid write of size 8
+==19703==    at 0x400A70: main (Lab8_mlee58_204.c:87)
+==19703==  Address 0x4c2f110 is 16 bytes after a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+==19703== Invalid write of size 8
+==19703==    at 0x400A7B: main (Lab8_mlee58_204.c:87)
+==19703==  Address 0x4c2f118 is not stack'd, malloc'd or (recently) free'd
+==19703== 
+==19703== Invalid write of size 8
+==19703==    at 0x400A86: main (Lab8_mlee58_204.c:87)
+==19703==  Address 0x4c2f120 is not stack'd, malloc'd or (recently) free'd
+==19703== 
+==19703== Invalid write of size 8
+==19703==    at 0x400A91: main (Lab8_mlee58_204.c:87)
+==19703==  Address 0x4c2f128 is 24 bytes before a block of size 768 alloc'd
+==19703==    at 0x4A06A2E: malloc (vg_replace_malloc.c:270)
+==19703==    by 0x400C94: ResizeArray (Lab8_mlee58_204.c:125)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+==19703== Invalid write of size 8
+==19703==    at 0x400A9C: main (Lab8_mlee58_204.c:87)
+==19703==  Address 0x4c2f130 is 16 bytes before a block of size 768 alloc'd
+==19703==    at 0x4A06A2E: malloc (vg_replace_malloc.c:270)
+==19703==    by 0x400C94: ResizeArray (Lab8_mlee58_204.c:125)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+==19703== Invalid write of size 8
+==19703==    at 0x400AA7: main (Lab8_mlee58_204.c:87)
+==19703==  Address 0x4c2f138 is 8 bytes before a block of size 768 alloc'd
+==19703==    at 0x4A06A2E: malloc (vg_replace_malloc.c:270)
+==19703==    by 0x400C94: ResizeArray (Lab8_mlee58_204.c:125)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+Choose from the following options:
+Add(a)
+Print(p)
+Lookup(l)
+Quit(q)
+p
+==19703== Invalid read of size 1
+==19703==    at 0x3B89047DEC: vfprintf (vfprintf.c:1641)
+==19703==    by 0x3B8904F149: printf (printf.c:35)
+==19703==    by 0x400B27: main (Lab8_mlee58_204.c:96)
+==19703==  Address 0x4c2f044 is 4 bytes inside a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+==19703== Invalid read of size 1
+==19703==    at 0x3B8907186E: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1309)
+==19703==    by 0x3B8904814F: vfprintf (vfprintf.c:1641)
+==19703==    by 0x3B8904F149: printf (printf.c:35)
+==19703==    by 0x400B27: main (Lab8_mlee58_204.c:96)
+==19703==  Address 0x4c2f045 is 5 bytes inside a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+==19703== Invalid read of size 1
+==19703==    at 0x3B8907188D: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1309)
+==19703==    by 0x3B8904814F: vfprintf (vfprintf.c:1641)
+==19703==    by 0x3B8904F149: printf (printf.c:35)
+==19703==    by 0x400B27: main (Lab8_mlee58_204.c:96)
+==19703==  Address 0x4c2f044 is 4 bytes inside a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+==19703== Invalid read of size 1
+==19703==    at 0x3B89071910: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1341)
+==19703==    by 0x3B8904814F: vfprintf (vfprintf.c:1641)
+==19703==    by 0x3B8904F149: printf (printf.c:35)
+==19703==    by 0x400B27: main (Lab8_mlee58_204.c:96)
+==19703==  Address 0x4c2f044 is 4 bytes inside a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+ID: hi
+==19703== Invalid read of size 1
+==19703==    at 0x3B89047DEC: vfprintf (vfprintf.c:1641)
+==19703==    by 0x3B8904F149: printf (printf.c:35)
+==19703==    by 0x400B57: main (Lab8_mlee58_204.c:97)
+==19703==  Address 0x4c2f053 is 19 bytes inside a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+==19703== Invalid read of size 1
+==19703==    at 0x3B8907186E: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1309)
+==19703==    by 0x3B8904814F: vfprintf (vfprintf.c:1641)
+==19703==    by 0x3B8904F149: printf (printf.c:35)
+==19703==    by 0x400B57: main (Lab8_mlee58_204.c:97)
+==19703==  Address 0x4c2f055 is 21 bytes inside a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+==19703== Invalid read of size 1
+==19703==    at 0x3B8907188D: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1309)
+==19703==    by 0x3B8904814F: vfprintf (vfprintf.c:1641)
+==19703==    by 0x3B8904F149: printf (printf.c:35)
+==19703==    by 0x400B57: main (Lab8_mlee58_204.c:97)
+==19703==  Address 0x4c2f054 is 20 bytes inside a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+==19703== Invalid read of size 1
+==19703==    at 0x3B89071910: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1341)
+==19703==    by 0x3B8904814F: vfprintf (vfprintf.c:1641)
+==19703==    by 0x3B8904F149: printf (printf.c:35)
+==19703==    by 0x400B57: main (Lab8_mlee58_204.c:97)
+==19703==  Address 0x4c2f053 is 19 bytes inside a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+==19703== Invalid read of size 1
+==19703==    at 0x3B89071920: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1340)
+==19703==    by 0x3B8904814F: vfprintf (vfprintf.c:1641)
+==19703==    by 0x3B8904F149: printf (printf.c:35)
+==19703==    by 0x400B57: main (Lab8_mlee58_204.c:97)
+==19703==  Address 0x4c2f055 is 21 bytes inside a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+Description: bye
+==19703== Invalid read of size 8
+==19703==    at 0x400B6F: main (Lab8_mlee58_204.c:98)
+==19703==  Address 0x4c2f088 is 72 bytes inside a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+Latitude: 1.100000
+==19703== Invalid read of size 8
+==19703==    at 0x400B9D: main (Lab8_mlee58_204.c:99)
+==19703==  Address 0x4c2f090 is 80 bytes inside a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+Longitude: 2.200000
+
+ID: b
+Description: b
+Latitude: 2.200000
+Longitude: 2.200000
+
+==19703== Invalid read of size 1
+==19703==    at 0x3B89071920: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1340)
+==19703==    by 0x3B8904814F: vfprintf (vfprintf.c:1641)
+==19703==    by 0x3B8904F149: printf (printf.c:35)
+==19703==    by 0x400B27: main (Lab8_mlee58_204.c:96)
+==19703==  Address 0x4c2f106 is 6 bytes after a block of size 192 free'd
+==19703==    at 0x4A06430: free (vg_replace_malloc.c:446)
+==19703==    by 0x400CD0: ResizeArray (Lab8_mlee58_204.c:130)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+ID: hello
+Description: goodbye
+Latitude: 3.300000
+Longitude: 3.300000
+
+Choose from the following options:
+Add(a)
+Print(p)
+Lookup(l)
+Quit(q)
+q
+==19703== 
+==19703== HEAP SUMMARY:
+==19703==     in use at exit: 768 bytes in 1 blocks
+==19703==   total heap usage: 2 allocs, 1 frees, 960 bytes allocated
+==19703== 
+==19703== 768 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==19703==    at 0x4A06A2E: malloc (vg_replace_malloc.c:270)
+==19703==    by 0x400C94: ResizeArray (Lab8_mlee58_204.c:125)
+==19703==    by 0x400950: main (Lab8_mlee58_204.c:67)
+==19703== 
+==19703== LEAK SUMMARY:
+==19703==    definitely lost: 768 bytes in 1 blocks
+==19703==    indirectly lost: 0 bytes in 0 blocks
+==19703==      possibly lost: 0 bytes in 0 blocks
+==19703==    still reachable: 0 bytes in 0 blocks
+==19703==         suppressed: 0 bytes in 0 blocks
+==19703== 
+==19703== For counts of detected and suppressed errors, rerun with: -v
+==19703== ERROR SUMMARY: 85 errors from 23 contexts (suppressed: 6 from 6)
+bash-4.1$ exit
+
+Script done on Fri 04 Nov 2016 12:47:48 AM EDT
