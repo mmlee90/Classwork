@@ -1,0 +1,47 @@
+Script started on Mon 07 Nov 2016 09:44:55 PM EST
+bash-4.1$ gcc -o Project_2.c[K[K Project)[K_2.c -lm
+bash-4.1$ Project_2
+                              |                              
+                              |                              
+                              |                              
+                              |                              
+                              |                              
+                              |                              
+                              |                              
+                              |                              
+                              |                              
+     o                   ooooooooooo                   o     
+    o o                oo     |     oo                o o    
+                      o       |       o                      
+                     o        |        o                     
+       o                      |                      o       
+   o                o         |         o                o   
+                              |                              
+                   o          |          o                   
+                              |                              
+        o         o           |           o         o        
+  o                           |                           o  
+------------------------------+------------------------------
+                 o            |            o                 
+                              |                              
+         o                    |                    o         
+                o             |             o                
+ o                            |                            o 
+          o    o              |              o    o          
+                              |                              
+              o               |               o              
+o          o                  |                  o          o
+            oo                |                oo            
+                              |                              
+                              |                              
+                              |                              
+                              |                              
+                              |                              
+                              |                              
+                              |                              
+                              |                              
+                              |                              
+                              |                              
+bash-4.1$ exit
+
+Script done on Mon 07 Nov 2016 09:46:12 PM EST
